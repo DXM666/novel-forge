@@ -1,0 +1,5 @@
+fastapi==0.101.0
+uvicorn[standard]==0.23.1
+openai
+llama-cpp-python
+# 其他依赖可在此添加，例如 openai, llama-cpp-python 等
