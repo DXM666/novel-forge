@@ -1,5 +1,24 @@
-fastapi==0.101.0
-uvicorn[standard]==0.23.1
+# Web 框架
+fastapi
+uvicorn[standard]
+# python-multipart
+
+# AI 模型
 openai
-llama-cpp-python
-# 其他依赖可在此添加，例如 openai, llama-cpp-python 等
+# llama-cpp-python
+
+# 并行处理
+# concurrent-log-handler
+# ray>=2.5.0  # 可选，用于分布式计算
+
+# NLP 工具
+# nltk
+# transformers>=4.30.0  # 可选，用于更高级的 NLP 任务
+# sentence-transformers>=2.2.2  # 可选，用于文本嵌入
+
+# 数据处理
+pydantic_settings
+# python-dotenv
+
+# 知识图谱
+# networkx

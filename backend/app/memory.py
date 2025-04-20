@@ -1,5 +1,3 @@
-from config import settings
-
 class BaseMemoryStore:
     def get(self, memory_id: str) -> str:
         raise NotImplementedError()

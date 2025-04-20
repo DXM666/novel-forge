@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from .ai import generate_text
 from .memory import memory_store
+from .routers import style
 
 # 创建 FastAPI 应用
 app = FastAPI(title="NovelForge API")
@@ -16,6 +17,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 集成路由器
+app.include_router(style.router)
 
 # 请求/响应模型
 class GenerateRequest(BaseModel):
