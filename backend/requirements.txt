@@ -6,6 +6,7 @@ uvicorn[standard]
 # AI 模型
 openai
 # llama-cpp-python
+langchain_ollama
 
 # 并行处理
 # concurrent-log-handler

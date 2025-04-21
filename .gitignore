@@ -5,3 +5,4 @@ dist/
 .windsurfrules
 __pycache__
 .vscode
+backend/data

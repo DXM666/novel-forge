@@ -4,14 +4,14 @@
 import sys
 import logging
 from pathlib import Path
-from app.ai import generate_text
-from app.memory import memory_store
-from app.pipeline.knowledge_graph import get_knowledge_graph
-from app.pipeline.style_tuner import style_tuner
 
 # 添加项目根目录到 Python 路径
 sys.path.append(str(Path(__file__).parent.parent))
 
+from app.ai import generate_text
+from app.memory import memory_store
+from app.pipeline.knowledge_graph import get_knowledge_graph
+from app.pipeline.style_tuner import style_tuner
 # 设置日志级别
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -86,27 +86,35 @@ def main():
     
     # 生成章节开头
     prompt = "chapter 第一章 东海风云\n李剑来到东海城，发现城中百姓惶恐不安。请用金庸风格续写。"
+    print(f"[调试] generate_text 输入 prompt: {prompt}")
     result = generate_text(memory_id, prompt)
+    print(f"[调试] generate_text 返回: {result}")
     print("\n===== 生成的章节开头 =====")
-    print(result)
+    print(result if result else "[警告] 未生成任何内容！")
     
     # 生成对话
     prompt = "李剑在城中遇到一位老者，询问黑煞的下落。"
+    print(f"[调试] generate_text 输入 prompt: {prompt}")
     result = generate_text(memory_id, prompt)
+    print(f"[调试] generate_text 返回: {result}")
     print("\n===== 生成的对话 =====")
-    print(result)
+    print(result if result else "[警告] 未生成任何内容！")
     
     # 生成场景描写
     prompt = "scene 夜晚，李剑独自来到城东的一座破庙，据说这里是黑煞的藏身之处。"
+    print(f"[调试] generate_text 输入 prompt: {prompt}")
     result = generate_text(memory_id, prompt)
+    print(f"[调试] generate_text 返回: {result}")
     print("\n===== 生成的场景 =====")
-    print(result)
+    print(result if result else "[警告] 未生成任何内容！")
     
     # 生成战斗场景
     prompt = "李剑在破庙中遇到了黑煞，两人展开激烈打斗。"
+    print(f"[调试] generate_text 输入 prompt: {prompt}")
     result = generate_text(memory_id, prompt)
+    print(f"[调试] generate_text 返回: {result}")
     print("\n===== 生成的战斗场景 =====")
-    print(result)
+    print(result if result else "[警告] 未生成任何内容！")
     
     # 打印记忆内容
     print("\n===== 完整记忆内容 =====")

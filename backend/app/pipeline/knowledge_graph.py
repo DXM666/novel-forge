@@ -52,14 +52,23 @@ class Entity:
         self.updated_at = datetime.datetime.now()
     
     def to_dict(self) -> Dict[str, Any]:
-        """转换为字典"""
+        """转换为字典，递归将所有 datetime 字段转为字符串"""
+        def convert(obj):
+            if isinstance(obj, datetime.datetime):
+                return obj.isoformat()
+            if isinstance(obj, list):
+                return [convert(item) for item in obj]
+            if isinstance(obj, dict):
+                return {k: convert(v) for k, v in obj.items()}
+            return obj
+
         return {
             "id": self.id,
             "name": self.name,
             "type": self.type,
-            "attributes": self.attributes,
-            "relations": self.relations,
-            "mentions": self.mentions,
+            "attributes": convert(self.attributes),
+            "relations": convert(self.relations),
+            "mentions": convert(self.mentions),
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat()
         }
