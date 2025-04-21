@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const RightSidebar = ({ visible, toggleRight }) => {
+const RightSidebar = ({ visible, toggleRight, onStyleChange }) => {
   const [styles, setStyles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedStyle, setSelectedStyle] = useState(null);
+  const [expandedIdx, setExpandedIdx] = useState(null);
+
+  // 自动加载风格列表
+  useEffect(() => {
+    fetchStyles();
+    // eslint-disable-next-line
+  }, []);
 
   const fetchStyles = async () => {
     setLoading(true);
@@ -17,6 +25,12 @@ const RightSidebar = ({ visible, toggleRight }) => {
     setLoading(false);
   };
 
+  const handleStyleSelect = (style, idx) => {
+    setSelectedStyle(style);
+    if (onStyleChange) onStyleChange(style);
+    setExpandedIdx(idx === expandedIdx ? null : idx);
+  };
+
   return (
     <div>
       <div id="rightSidebar" className={`sidebar-transition w-80 bg-white border-l border-gray-200 overflow-y-auto flex-shrink-0 ${visible ? '' : 'hidden'}`}>
@@ -28,18 +42,26 @@ const RightSidebar = ({ visible, toggleRight }) => {
             </button>
           </div>
           <div className="mt-4">
-            <button
-              className="w-full px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded text-white font-medium mb-2"
-              onClick={fetchStyles}
-              disabled={loading}
-            >
-              {loading ? '加载中...' : '获取风格列表'}
-            </button>
+            <div className="mb-2">
+              {loading && <span className="text-gray-500 text-sm">加载中...</span>}
+            </div>
             {styles.length > 0 && (
               <ul className="bg-gray-50 rounded p-2 mt-2 max-h-60 overflow-y-auto text-sm">
                 {styles.map((style, idx) => (
-                  <li key={idx} className="mb-1">
-                    <b>{style.name}</b> - {style.description || '无描述'}
+                  <li key={idx} className={`mb-1 rounded transition-all border ${selectedStyle && selectedStyle.name === style.name ? 'border-indigo-500 bg-white shadow' : 'border-transparent hover:bg-indigo-50'}`}
+                      onClick={() => handleStyleSelect(style, idx)}
+                      style={{ cursor: 'pointer', padding: '6px 8px' }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <b className={selectedStyle && selectedStyle.name === style.name ? 'text-indigo-700' : 'text-gray-900'}>{style.name}</b>
+                      <button className="ml-2 text-xs text-indigo-400 hover:text-indigo-700 focus:outline-none" onClick={e => {e.stopPropagation(); setExpandedIdx(idx === expandedIdx ? null : idx);}}>
+                        {expandedIdx === idx ? '收起' : '展开'}
+                      </button>
+                    </div>
+                    <div className={`text-xs text-gray-600 mt-1 ${expandedIdx === idx ? '' : 'line-clamp-1 truncate'}`}>{style.description || '无描述'}</div>
+                    {expandedIdx === idx && style.sample && (
+                      <div className="mt-1 p-2 bg-indigo-50 rounded text-xs text-gray-700 border border-indigo-100">示例：{style.sample}</div>
+                    )}
                   </li>
                 ))}
               </ul>
