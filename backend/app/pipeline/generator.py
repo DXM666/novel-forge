@@ -1,6 +1,7 @@
 from typing import Dict, Any
 import logging
 from app.config import settings
+from app.model_infer import model_inference
 from openai import OpenAI
 
 
@@ -31,22 +32,25 @@ def call_openai_api(prompt: str, context: str) -> str:
 def paragraph_generator(data: Dict[str, Any], context: str) -> str:
     """
     核心段落生成器：根据历史上下文、用户输入、风格向量等生成段落。
+    根据 settings.mode 自动切换推理方式。
     """
     prompt = data.get("prompt") or data.get("raw") or "请生成一段符合设定的小说正文。"
-    return call_openai_api(prompt, context)
+    return model_inference(prompt, context)
 
 
 def dialogue_generator(data: Dict[str, Any], context: str) -> str:
     """
     对话生成器：专注于人物对话。
+    根据 settings.mode 自动切换推理方式。
     """
     prompt = data.get("prompt") or data.get("raw") or "请生成一段符合设定的人物对话。"
-    return call_openai_api(prompt, context)
+    return model_inference(prompt, context)
 
 
 def scene_generator(data: Dict[str, Any], context: str) -> str:
     """
     场景描述生成器：环境描写、动作细节等。
+    根据 settings.mode 自动切换推理方式。
     """
     prompt = data.get("prompt") or data.get("raw") or "请生成一段环境或动作描写。"
-    return call_openai_api(prompt, context)
+    return model_inference(prompt, context)

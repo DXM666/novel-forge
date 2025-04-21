@@ -62,18 +62,37 @@ novel-forge/
    cd backend
    pip install -r requirements.txt
    ```
-2. 设置环境变量（可选）：
-   ```bash
-   export OPENAI_API_KEY=your_openai_key
-   export OPENAI_MODEL=gpt-3.5-turbo
-   export LOCAL_MODEL_PATH=/path/to/model
-   ```
+2. 选择推理模型方式（通过环境变量配置）：
+   - **使用 OpenAI API 调用云端模型：**
+     ```bash
+     export OPENAI_API_KEY=your_openai_key
+     export OPENAI_MODEL=gpt-3.5-turbo
+     # 不设置 LOCAL_MODEL_PATH
+     ```
+     只要 OPENAI_API_KEY 存在，系统自动走 OpenAI API。
+   - **使用本地模型（Ollama + langchain）：**
+     ```bash
+     export LOCAL_MODEL_PATH=/path/to/model # 路径可选，仅供自定义
+     unset OPENAI_API_KEY  # 或不设置
+     ```
+     此时将自动调用本地Ollama模型（默认qwen2.5:7b，可在代码中调整）。
+   - **依赖说明：**
+     - 本地推理需安装并配置好 Ollama（详见 https://ollama.com/）
+     - pip 依赖已包含 langchain_ollama
+
 3. 启动服务：
    ```bash
    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
    ```
 
 API 文档自动生成：http://localhost:8000/docs
+
+---
+
+### AI推理切换机制说明
+- 后端会根据 `OPENAI_API_KEY` 是否存在自动决定调用云端API还是本地模型。
+- 可通过 `.env` 文件或环境变量灵活切换。
+- 本地推理默认模型为 `qwen2.5:7b`，如需更换请修改 `backend/app/ai.py`。
 
 ## 核心功能
 

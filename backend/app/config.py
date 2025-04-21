@@ -1,5 +1,10 @@
 import os
 from pydantic_settings import BaseSettings
+from enum import Enum
+
+class ModelMode(str, Enum):
+    api = "api"      # 接口调用
+    local = "local"  # 本地模型
 
 class Settings(BaseSettings):
     # 后端配置
@@ -7,7 +12,7 @@ class Settings(BaseSettings):
     port: int = 8000
 
     # AI 配置
-    use_openai: bool = bool(os.getenv("OPENAI_API_KEY"))
+    mode: ModelMode = ModelMode(os.getenv("MODE", "api"))  # "api" or "local"
     openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
     openai_model: str = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
     # 本地模型路径或配置
