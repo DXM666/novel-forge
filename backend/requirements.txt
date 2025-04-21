@@ -23,3 +23,6 @@ pydantic_settings
 
 # 知识图谱
 # networkx
+
+# 测试
+pytest

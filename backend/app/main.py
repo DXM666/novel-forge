@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from .ai import generate_text
 from .memory import memory_store
 from .routers import style
+from app.api import knowledge_graph_api
 
 # 创建 FastAPI 应用
 app = FastAPI(title="NovelForge API")
@@ -20,6 +21,7 @@ app.add_middleware(
 
 # 集成路由器
 app.include_router(style.router)
+app.include_router(knowledge_graph_api.router)
 
 # 请求/响应模型
 class GenerateRequest(BaseModel):

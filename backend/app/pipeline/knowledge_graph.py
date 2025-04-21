@@ -127,6 +127,35 @@ class Rule(Entity):
 
 class KnowledgeGraph:
     """知识图谱管理器"""
+
+    def to_cytoscape(self):
+        """
+        导出 Cytoscape.js 兼容的 JSON 格式
+        {"elements": [ {"data": {...}}, ... ]}
+        """
+        elements = []
+        # 导出实体节点
+        for entity in self.entities.values():
+            elements.append({
+                "data": {
+                    "id": entity.id,
+                    "label": entity.name,
+                    "type": entity.type,
+                    **(entity.attributes or {})
+                }
+            })
+        # 导出关系边
+        for entity in self.entities.values():
+            for rel in getattr(entity, "relations", []):
+                elements.append({
+                    "data": {
+                        "source": entity.id,
+                        "target": rel["target_id"],
+                        "label": rel["type"],
+                        **(rel.get("attributes") or {})
+                    }
+                })
+        return {"elements": elements}
     
     def __init__(self, novel_id: str):
         self.novel_id = novel_id
