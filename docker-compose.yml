@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: novel-forge-postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: root
+      POSTGRES_DB: novel_forge_base
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+volumes:
+  postgres_data:

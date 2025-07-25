@@ -1,28 +1,51 @@
 # Web 框架
-fastapi
-uvicorn[standard]
-# python-multipart
+fastapi==0.95.0
+uvicorn[standard]==0.22.0
+starlette==0.27.0
+python-multipart==0.0.6
 
 # AI 模型
-openai
-# llama-cpp-python
-langchain_ollama
+openai==0.27.8
+langchain==0.1.0
+langchain_ollama==0.0.1
 
 # 并行处理
-# concurrent-log-handler
-# ray>=2.5.0  # 可选，用于分布式计算
+concurrent-log-handler==0.9.24
+ray==2.5.1  # 用于分布式计算
 
 # NLP 工具
-# nltk
-# transformers>=4.30.0  # 可选，用于更高级的 NLP 任务
-# sentence-transformers>=2.2.2  # 可选，用于文本嵌入
+tiktoken==0.4.0  # 用于准确的token计算
+sentence-transformers==2.2.2  # 用于文本嵌入
 
 # 数据处理
-pydantic_settings
-# python-dotenv
+pydantic_settings==2.0.3
+pydantic==1.10.7
+numpy==1.24.3
+pandas==2.0.1
+scikit-learn==1.2.2
+joblib==1.2.0
+pyyaml==6.0
+httpx==0.24.1
 
 # 知识图谱
-# networkx
+networkx==3.1
+
+# 数据库
+psycopg2-binary==2.9.6
+alembic==1.10.4
+sqlalchemy==2.0.9
+pgvector==0.2.0
+
+# 缓存
+redis==4.5.5
+
+# 环境配置
+python-dotenv==1.0.0
+
+# 流程管理
+langgraph>=0.0.20
 
 # 测试
-pytest
+pytest==7.3.1
+pytest-asyncio==0.21.0
+pytest-cov==4.1.0

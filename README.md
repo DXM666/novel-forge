@@ -12,27 +12,48 @@ novel-forge/
 │   ├── vite.config.js      # Vite 配置
 │   └── tailwind.config.js  # Tailwind CSS 配置
 │
+├── requirements/           # 需求文档
+│   └── ...                # 各模块需求文档
+│
 └── backend/                 # 后端项目 (FastAPI)
     ├── app/                # Python 包代码
-    │   ├── config.py       # 环境及配置管理
-    │   ├── memory.py       # 记忆存储模块 (内存/可扩展 Redis)
-    │   ├── ai.py           # AI 推理逻辑 (OpenAI / 本地模型)
-    │   ├── context_manager.py # 上下文管理（递归摘要）
-    │   ├── main.py         # FastAPI 接口定义
-    │   ├── routers/        # API 路由模块
-    │   │   └── style.py    # 风格管理 API
+    │   ├── api/             # API 端点目录
+    │   │   └── health.py      # 健康检查API
+    │   ├── cache/           # 缓存系统
+    │   │   ├── cache_factory.py  # 缓存工厂
+    │   │   ├── memory_cache.py   # 内存缓存
+    │   │   └── redis_cache.py    # Redis缓存
+    │   ├── config.py       # 统一配置管理
+    │   ├── database/        # 数据库及模型
+    │   │   └── db_utils.py    # 数据库工具
+    │   ├── memory.py       # 记忆存储管理
+    │   ├── memory_system.py # 记忆系统业务逻辑
+    │   ├── embeddings.py   # 统一嵌入向量管理
+    │   ├── vector_store.py # 向量存储管理
+    │   ├── vector_db_init.py # 向量数据库初始化
+    │   ├── context_manager.py # 上下文管理
+    │   ├── main.py         # FastAPI 应用入口
+    │   ├── routes/          # API 路由模块
+    │   │   ├── style.py        # 风格管理 API
+    │   │   └── memory_api.py   # 记忆管理 API
+    │   ├── utils/           # 工具类
+    │   │   ├── logging_utils.py # 日志工具
+    │   │   ├── error_handler.py # 错误处理
+    │   │   ├── config_validator.py # 配置验证
+    │   │   └── app_state.py    # 应用状态管理
     │   └── pipeline/       # AI 生成管道
-    │       ├── workflow.py     # 主工作流程协调
-    │       ├── parser.py       # 输入解析（意图识别、大纲生成）
-    │       ├── generator.py    # 内容生成（段落、对话、场景）
+    │       ├── workflow.py     # 主工作流程
+    │       ├── parser.py       # 输入解析
+    │       ├── generator.py    # 内容生成
     │       ├── consistency.py  # 一致性检查
-    │       ├── postprocessing.py # 后处理（润色、风格迁移）
-    │       ├── knowledge_graph.py # 知识图谱（角色/世界观）
-    │       ├── style_tuner.py  # 风格微调
-    │       └── parallel_inference.py # 并行推理
-    ├── examples/           # 示例脚本
-    │   └── generate_chapter.py # 章节生成示例
-    ├── data/               # 数据存储目录
+    │       └── knowledge_graph.py # 知识图谱
+    ├── migrations/         # 数据库迁移脚本
+    │   ├── env.py          # 迁移环境配置
+    │   └── versions/       # 版本迁移脚本
+    ├── tests/              # 测试目录
+    ├── alembic.ini         # Alembic 配置
+    ├── manage_db.py        # 数据库管理脚本
+    ├── pytest.ini         # Pytest 配置
     ├── requirements.txt    # Python 依赖列表
     └── .env.example        # 环境变量示例
 ```
@@ -136,10 +157,15 @@ API 文档自动生成：http://localhost:8000/docs
 
 ### 后端技术栈
 - **框架**：FastAPI
+- **数据库**：PostgreSQL（集成pg_vector向量扩展）
+- **缓存**：Redis 分布式缓存和内存缓存适配器
+- **数据迁移**：Alembic 实现版本化数据库管理
+- **向量引擎**：固有PostgreSQL pg_vector和外部Pinecone/Weaviate/Chroma
 - **AI 模型**：OpenAI API / 本地大语言模型
 - **并行处理**：ThreadPoolExecutor（可扩展为Ray分布式）
 - **知识图谱**：自定义实体-关系模型
-- **数据存储**：文件系统/可扩展为数据库
+- **状态管理**：集中化应用状态和健康检查
+- **配置管理**：统一配置模块与验证机制
 
 ## 部署建议
 - **前端**：静态托管平台（Netlify / Vercel / GitHub Pages）
